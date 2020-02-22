@@ -8,9 +8,7 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-form>
             <b-form-input v-model="keyword" size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
           </b-nav-form>
-
           <b-nav-item>
             <b-button v-b-modal="'cart'" variant="info">
               ตะกร้าสินค้า
@@ -23,7 +21,7 @@
       </b-collapse>
     </b-navbar>
 
-    <b-container>
+    <b-container class="main">
       <b-row class="product-list pt-3 pb-3">
         <b-col v-for="(book, index) in filterProduct" cols="3" :key="`book-${index}`">
           <b-card
@@ -64,6 +62,11 @@
             <b-card-text>
               รวม {{ item.amount * item.price }} บาท
             </b-card-text>
+          </b-card-body>
+          <b-card-body>
+            <b-button variant="danger" @click="remove(item.id)">
+              <b-icon icon="trash" aria-hidden="true"></b-icon>
+            </b-button>
           </b-card-body>
         </b-card>
       </div>
@@ -214,6 +217,12 @@ export default {
         centered: true
       })
       data.amount = 1
+    },
+    remove (id) {
+      const index = this.cart.findIndex((r) => r.id === id)
+      if (index !== -1) {
+        this.cart.splice(index, 1)
+      }
     },
     setRate (data) {
       let rate = 0
