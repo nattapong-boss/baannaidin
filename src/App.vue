@@ -148,7 +148,7 @@ export default {
         newData = this.books
       } else {
         this.books.forEach((r) => {
-          if (r.name.toLowerCase().indexOf(this.keyword) !== -1) {
+          if (r.name.toLowerCase().indexOf(this.keyword.toLowerCase()) !== -1) {
             newData.push(r)
           }
         })
