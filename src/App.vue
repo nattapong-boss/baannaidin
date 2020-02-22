@@ -4,7 +4,6 @@
       <b-navbar-brand href="#">Baannaidin</b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
-        <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-form>
             <b-form-input v-model="keyword" size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
@@ -23,7 +22,7 @@
 
     <b-container class="main">
       <b-row class="product-list pt-3 pb-3">
-        <b-col v-for="(book, index) in filterProduct" cols="3" :key="`book-${index}`">
+        <b-col v-for="(book, index) in filterProduct" md="3" :key="`book-${index}`">
           <b-card
             :img-src="require(`@/assets/img/${book.img}.jpg`)"
             img-alt="Image"
@@ -87,7 +86,7 @@
 <script>
 export default {
   name: 'App',
-  data() {
+  data () {
     return {
       keyword: '',
       books: [
@@ -159,25 +158,16 @@ export default {
       return newData
     },
     count () {
-      let count = 0
-      if (this.cart.length > 0) {
-        count = this.cart.reduce((sumPrice, product) => sumPrice + product.amount, 0)
-      }
-      return count
+      return this.cart.reduce((sumCount, product) => sumCount + product.amount, 0)
     },
     total () {
-      let total = 0
-      if (this.cart.length > 0) {
-        total = this.cart.reduce((sumPrice, product) => sumPrice + (product.price * product.amount), 0)
-      }
-      return total 
+      return this.cart.reduce((sumPrice, product) => sumPrice + (product.price * product.amount), 0) 
     },
     discount () {
       let discount = 0
       if (this.cart.length > 0) {
         let newCart = JSON.parse(JSON.stringify(this.cart))
-        const loop = newCart.reduce((sumPrice, product) => sumPrice + product.amount, 0)
-        for (let i = 0; i <= loop; i++) {
+        for (let i = 0; i <= this.count; i++) {
           let price = 0
           let discountCart = newCart.filter((r) => {
             if (r.amount > 0) {
@@ -186,7 +176,7 @@ export default {
               return r
             }
           })
-          let discountRate = this.setRate(discountCart)
+          let discountRate = this.setDiscountRate(discountCart)
           discount += price * discountRate
         }
       }
@@ -224,8 +214,8 @@ export default {
         this.cart.splice(index, 1)
       }
     },
-    setRate (data) {
-      let rate = 0
+    setDiscountRate (data) {
+      let rate
       if (data.length > 6) {
         rate = 0.6
       } else if (data.length > 5) {
